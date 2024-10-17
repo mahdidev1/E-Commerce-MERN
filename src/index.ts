@@ -1,6 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import userRouter from "./routers/userRouter";
+import productRouter from "./routers/productRoute";
+
+import { Iproducts } from "./services/productService";
 
 const app = express();
 const port = 3001;
@@ -11,7 +14,9 @@ mongoose
   .then(() => console.log("Mongo connected!"))
   .catch((err) => console.log("faild to connect", err));
 
+Iproducts();
 app.use("/user", userRouter);
+app.use("/products", productRouter);
 
 app.listen(port, () => {
   console.log(`connected in port ${port}`);
