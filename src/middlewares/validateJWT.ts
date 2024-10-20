@@ -1,20 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { userModel } from "../models/userModel";
-
-interface ExtendRequest extends Request {
-  user?: any;
-}
+import { ExtendRequest } from "../types/extendedRequest";
 
 const validateJWT = (req: ExtendRequest, res: Response, next: NextFunction) => {
-  const authorizationHeader = req.get("authorizaton");
+  const authorizationHeader = req.get("authorization");
 
   if (!authorizationHeader) {
     res.status(403).send("Authorizaton was not provided");
     return;
   }
 
-  const tocken = authorizationHeader.split("")[1];
+  const tocken = authorizationHeader.split(" ")[1];
 
   if (!tocken) {
     res.status(403).send("bearer tocken not founded");

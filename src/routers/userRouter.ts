@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login } from "../services/userServices";
+import { register, login, getAllUsers } from "../services/userServices";
 
 const router = express.Router();
 
@@ -12,6 +12,11 @@ router.post("/register", async (req, res) => {
     password,
   });
   res.status(statusCode).send(data);
+});
+
+router.get("/", async (req, res) => {
+  const users = await getAllUsers();
+  res.status(200).send(users);
 });
 
 router.post("/login", async (req, res) => {

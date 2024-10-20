@@ -62,6 +62,10 @@ export const login = async ({ email, password }: LoginParams) => {
   return { data: "incorrect password", statusCode: 400 };
 };
 
+export const getAllUsers = async () => {
+  return await userModel.find();
+};
+
 const generateJWT = (data: any) => {
   return jwt.sign(data, "3pPWVOGlkg6P1rHqBiMZnNrcty2DvBt8");
 };
