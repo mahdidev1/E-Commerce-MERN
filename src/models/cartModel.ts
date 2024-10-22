@@ -10,7 +10,7 @@ export interface ICartItem {
 
 export interface ICart extends Document {
   userId: ObjectId | string;
-  item: ICartItem[];
+  items: ICartItem[];
   totalAmount: number;
   status: "active" | "completed";
 }
@@ -23,7 +23,7 @@ const cartItemSchema = new Schema<ICartItem>({
 
 const cartSchema = new Schema<ICart>({
   userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  item: [cartItemSchema],
+  items: [cartItemSchema],
   totalAmount: { type: Number, required: true },
   status: { type: String, enum: CartStatusEnum, default: "active" },
 });
