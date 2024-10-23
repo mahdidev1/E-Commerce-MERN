@@ -1,8 +1,9 @@
 import express from "express";
 import {
   addItemToCart,
+  checkout,
   clearCart,
-  deleteItemInCart,
+  deleteItemIncart,
   getActiveCartForUser,
   updateItemInCart,
 } from "../services/cartService";
@@ -43,8 +44,19 @@ router.delete(
   async (req: ExtendRequest, res) => {
     const userId = req?.user?._id;
     const { productId } = req.params;
-    const response = await deleteItemInCart({ userId, productId });
+    const response = await deleteItemIncart({ userId, productId });
     res.status(response.statusCode).send(response.data);
   }
 );
 export default router;
+
+router.post("/checkout", validateJWT, async (req: ExtendRequest, res) => {
+  try {
+    const userId = req?.user?._id;
+    const { address } = req.body;
+    const response = await checkout({ userId, address });
+    res.status(response.statusCode).send(response.data);
+  } catch {
+    res.status(500).send("Something went wrong!");
+  }
+});
