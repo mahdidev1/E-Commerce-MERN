@@ -67,5 +67,5 @@ export const getAllUsers = async () => {
 };
 
 const generateJWT = (data: any) => {
-  return jwt.sign(data, "3pPWVOGlkg6P1rHqBiMZnNrcty2DvBt8");
+  return jwt.sign(data, process.env.JWT_SECRT || "");
 };

@@ -17,29 +17,25 @@ const validateJWT = (req: ExtendRequest, res: Response, next: NextFunction) => {
     res.status(403).send("bearer tocken not founded");
   }
 
-  jwt.verify(
-    tocken,
-    "3pPWVOGlkg6P1rHqBiMZnNrcty2DvBt8",
-    async (err, payload) => {
-      if (err) {
-        res.status(403).send("invalid tocken ");
-        return;
-      }
-      if (!payload) {
-        res.status(403).send("invalid tocken payload");
-        return;
-      }
-
-      const userPayload = payload as {
-        email: string;
-        firstName: string;
-        lastName: string;
-      };
-
-      const user = await userModel.findOne({ email: userPayload.email });
-      req.user = user;
-      next();
+  jwt.verify(tocken, process.env.JWT_SECRT || "", async (err, payload) => {
+    if (err) {
+      res.status(403).send("invalid tocken ");
+      return;
     }
-  );
+    if (!payload) {
+      res.status(403).send("invalid tocken payload");
+      return;
+    }
+
+    const userPayload = payload as {
+      email: string;
+      firstName: string;
+      lastName: string;
+    };
+
+    const user = await userModel.findOne({ email: userPayload.email });
+    req.user = user;
+    next();
+  });
 };
 export default validateJWT;
