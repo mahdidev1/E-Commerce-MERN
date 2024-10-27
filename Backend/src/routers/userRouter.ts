@@ -1,30 +1,31 @@
 import express from "express";
-import { register, login, getAllUsers } from "../services/userServices";
+import { login, register } from "../services/userServices";
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", async (request, response) => {
   try {
-    const { firstName, lastName, email, password } = req.body;
-    const { data, statusCode } = await register({
+    const { firstName, lastName, email, password } = request.body;
+    console.log(request.body);
+    const { statusCode, data } = await register({
       firstName,
       lastName,
       email,
       password,
     });
-    res.status(statusCode).send(data);
-  } catch (err) {
-    res.status(500).send("Something went wrong! ");
+    response.status(statusCode).json(data);
+  } catch {
+    response.status(500).send("Something went wrong!");
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", async (request, response) => {
   try {
-    const { email, password } = req.body;
-    const { data, statusCode } = await login({ email, password });
-    res.status(statusCode).send(data);
-  } catch (err) {
-    res.status(500).send("Something went wrong! ");
+    const { email, password } = request.body;
+    const { statusCode, data } = await login({ email, password });
+    response.status(statusCode).json(data);
+  } catch {
+    response.status(500).send("Something went wrong!");
   }
 });
 
